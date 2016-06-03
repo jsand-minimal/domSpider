@@ -1,4 +1,4 @@
-import DomUtils from 'DomUtils'
+import * as DomUtils from 'src/DomUtils'
 /*eslint no-unused-vars: 0*/
 /*eslint brace-style: ["error", "stroustrup"]*/
 export default function (headEl) {
@@ -16,13 +16,14 @@ export default function (headEl) {
 
   class NodeObserver {
     constructor (node, options) {
+      if (!node) return
       this.node = node
       // prevSibling
       this.prevSibilngObserver = options.hasOwnProperty('prevSiblingObserver') ? options.prevSiblingObserver : null
       // child
-      this.childObserver = createObserver(getChildNode(node), {parentObserver: this})
+      this.childObserver = createObserver(DomUtils.getFirstNodeChild(node), {parentObserver: this})
       // next
-      this.nextSiblingObserver = createObserver(getNextSiblingNode(node), {prevSiblingObserver: this})
+      this.nextSiblingObserver = createObserver(DomUtils.getNextNodeSibling(node), {prevSiblingObserver: this})
       // parent
       this.parentObserver = options.hasOwnProperty('parentObserver') ? options.parentObserver : null
       // if (siblingObserver
@@ -30,23 +31,29 @@ export default function (headEl) {
       // discover()
     }
 
+    broadcast (message) {
+      if (true || message) {
+        this.takeAction()
+      }
+      this.childObserver.broadcast()
+      this.nextSiblingObserver.broadcast()
+    }
+
+    takeAction () {
+      console.log(this.node)
+    }
   }
 
   function createObserver (node, options) {
+    if (!node) {
+      return new NullObserver()
+    }
     if (node.nodeType === 1) {
       return new ElementObserver(node, options)
     }
     else {
       return new TextNodeObserver(node, options)
     }
-  }
-
-  function getChildNode (node) {
-    return null
-  }
-
-  function getNextSiblingNode (node) {
-    return null
   }
 
   function getObserverClass (node) {
@@ -74,5 +81,16 @@ export default function (headEl) {
     }
   }
 
+  class NullObserver extends NodeObserver {
+    constructor () {
+      super(null)
+    }
+    broadcast () {
+    }
+    takeAction () {
+    }
+  }
+
   init()
+  headObserver.broadcast()
 }

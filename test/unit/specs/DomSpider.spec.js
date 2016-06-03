@@ -1,4 +1,4 @@
-import DomSpider from 'src/DomSpider'
+// import DomSpider from 'src/DomSpider'
 
 describe('DomSpider.js', () => {
   it('should be a dummy test', () => {

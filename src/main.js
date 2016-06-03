@@ -9,7 +9,6 @@ new Vue({
     spider: {}
   },
   ready: function () {
-    debugger
     this.spider = new DomSpider('body')
   }
 })
