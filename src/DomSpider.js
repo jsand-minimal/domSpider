@@ -79,6 +79,10 @@ export default function (headEl) {
       console.log('created TextNodeObserver')
       super(node, options)
     }
+
+    takeAction () {
+      this.node.nodeValue += 'hi'
+    }
   }
 
   class NullObserver extends NodeObserver {

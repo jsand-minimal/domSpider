@@ -9,6 +9,7 @@ const nodeTypes = {
   documentTypeNode: 10,
   documentFragmentNode: 11
 }
+const TEXT_NODE_TYPE = 3
 export function getFirstNodeChild (node, options) {
   // format options object
   options = options || {}
@@ -32,7 +33,9 @@ export function getFirstNodeChild (node, options) {
   var nodeList = node.childNodes
   for (var n = 0; n < nodeList.length; n++) {
     if (targetNodeTypes.indexOf(nodeList[n].nodeType) >= 0) {
-      return nodeList[n]
+      if (!(nodeList[n].nodeType === TEXT_NODE_TYPE && nodeList[n].nodeValue.replace(/\s+/, '').length === 0)) {
+        return nodeList[n]
+      }
     }
   }
   return null
@@ -60,7 +63,9 @@ export function getNextNodeSibling (node, options) {
   var nextNode = node.nextSibling
   while (nextNode) {
     if (targetNodeTypes.indexOf(nextNode.nodeType) >= 0) {
-      return nextNode
+      if (!(nextNode.nodeType === TEXT_NODE_TYPE && nextNode.nodeValue.replace(/\s+/, '').length === 0)) {
+        return nextNode
+      }
     }
     nextNode = nextNode.nextSibling
   }

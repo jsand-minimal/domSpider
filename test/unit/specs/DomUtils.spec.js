@@ -122,4 +122,11 @@ describe('DomUtils', () => {
     var resNodeSibling = DomUtils.getNextNodeSibling(vm.$el.querySelector('#start-node'))
     expect(resNodeSibling).to.be.null
   })
+  it('should not return the empty TextNode', () => {
+    var vm = new Vue({
+      template: '<div><div id="start-node"></div> <p id="first-element-child-node"></p></div>'
+    }).$mount()
+    var resNodeSibling = DomUtils.getNextNodeSibling(vm.$el.querySelector('#start-node'))
+    expect(resNodeSibling.id).to.equal('first-element-child-node')
+  })
 })
